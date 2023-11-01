@@ -1,7 +1,10 @@
-import { Fragment, useState } from 'react'
+import { AppContext } from "../context/ContextWrapper";
+import { Fragment, useState, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+
 
 /*
 const navigation = [
@@ -18,7 +21,8 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
-
+  const { setIsLoggedIn } = useContext(AppContext)
+  const navigate = useNavigate()
   const [navigation, setNavigation] = useState(
     [
       { name: 'Login', href: '/login', current: false },
@@ -38,6 +42,12 @@ export default function NavBar() {
     });
     setNavigation(newNav)
     console.log(navigation)
+  }
+
+  const logOut = (e)=>{
+    e.preventDefault()
+    setIsLoggedIn(false)
+    navigate("/")
   }
 
   return (
@@ -141,7 +151,7 @@ export default function NavBar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            onClick={logOut}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign out

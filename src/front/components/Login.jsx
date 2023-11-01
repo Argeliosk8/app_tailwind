@@ -1,6 +1,21 @@
-import React from "react";
+import React, {useContext, useState} from "react";
+import { AppContext } from "../context/ContextWrapper";
+import { useNavigate } from "react-router-dom";
 
 export const Login = ()=>{
+  const navigate = useNavigate();
+  const {setIsLoggedIn} = useContext(AppContext)
+  const [user, setUser] = useState()
+  const [pwd, setPwd] = useState()
+  const login = (e)=>{
+    e.preventDefault()
+    if (user == 'argelio@gmail.com' && pwd == '123'){
+      setIsLoggedIn(true)
+      navigate('/dashboard')
+    } else {
+      alert('wrong login info')
+    }
+  }
     return(
         <>
         {/*
@@ -31,6 +46,7 @@ export const Login = ()=>{
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e)=>{setUser(e.target.value)}}
                     id="email"
                     name="email"
                     type="email"
@@ -54,6 +70,7 @@ export const Login = ()=>{
                 </div>
                 <div className="mt-2">
                   <input
+                    onChange={(e)=>{setPwd(e.target.value)}}
                     id="password"
                     name="password"
                     type="password"
@@ -66,6 +83,7 @@ export const Login = ()=>{
   
               <div>
                 <button
+                  onClick={login}
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
