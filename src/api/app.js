@@ -39,8 +39,6 @@ app.get('/hello', async (req, res) => {
   })
   
   app.get('/hello/:status', (req, res) => {
-    const query = { status: req.status}
-    const collection = "recruiters"
     run()
 
   })
