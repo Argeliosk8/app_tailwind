@@ -9,7 +9,7 @@ const uri = process.env.URI;
 
 const client = new MongoClient(uri)
 
-async function run() {
+async function run(query) {
   try {
     const database = client.db('dat');
     const recruiters = database.collection('recruiters');
@@ -34,7 +34,8 @@ app.param('status', (req, res, next, stat) => {
 })
 
 app.get('/hello', async (req, res) => {
-    const recruiter = await run()
+    const query = {}
+    const recruiter = await run(query)
     res.send(recruiter)
   })
   
