@@ -1,30 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const { run } = require('./utils')
 const app = express()
 const port = 5000
-const { MongoClient } = require("mongodb");
-require('dotenv').config()
-
-const uri = process.env.URI;
-
-const client = new MongoClient(uri)
-
-async function run(query) {
-  try {
-    const database = client.db('dat');
-    const recruiters = database.collection('recruiters');
-    const options = {
-      sort: {"name": 1},
-      projection: {_id: 0, name: 1, reqs: 1}
-    }
-    const recruiter = await recruiters.find(query, options).toArray();
-    console.log(recruiter)
-    return recruiter
-  } catch (error) {
-    console.log(error)
-    await client.close();
-  }
-}
 
 app.use(bodyParser.json());
 
