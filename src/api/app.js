@@ -5,6 +5,10 @@ const app = express()
 const port = 5000
 
 app.use(bodyParser.json());
+app.use((req, res, next)=>{
+  console.log("request received")
+  next();
+})
 
 /*
 app.param('status', (req, res, next, stat) => {
@@ -18,11 +22,12 @@ app.get('/find/allrecruiters', async (req, res) => {
     res.send(recruiter)
   })
   
-app.get('/find/recruiter', async (req, res) => {
+app.get('/find/recruiter', async (req, res, next) => {
   const body = req.body
   const name = body.name
   const recruiter = await findByName(name)
   res.send(recruiter)
+  next()
 })
 
 
@@ -31,6 +36,10 @@ app.post('/add/recruiter', async (req, res) => {
   const recruiter = body.recruiter
   const result = await addRecruiter(recruiter)
   res.send(result)
+})
+
+app.use((req, res, next)=>{
+  console.log("request completed")
 })
 
 app.listen(port, () => {
