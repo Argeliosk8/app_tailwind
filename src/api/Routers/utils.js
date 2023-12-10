@@ -49,3 +49,4 @@ exports.addRecruiter = async (recruiter) => {
         await client.close();
     }
 }
+

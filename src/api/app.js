@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 const recruitersRouter = require('./Routers/recruiters.js');
+const { listDatabases } = require('./appUtils.js')
 
 const app = express()
 const port = 5000
@@ -13,8 +14,6 @@ const uri = process.env.URI;
 const client = new MongoClient(uri)
 const database = "dat"
 client.db(database);
-
-// Mongodb connection 
 
 const connectToDatabase = async () => {
   try {
@@ -28,6 +27,7 @@ const connectToDatabase = async () => {
 const main = async () => {
   try {
     await connectToDatabase()
+    await listDatabases(client)
   } catch (err) {
     console.log(`Error connecting to the database ${err}`)
   }
