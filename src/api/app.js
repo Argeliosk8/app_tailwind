@@ -1,46 +1,48 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { findAllRecruiters, findByName, addRecruiter } = require('./utils')
+require('dotenv').config()
+const recruitersRouter = require('./Routers/recruiters.js');
+
 const app = express()
 const port = 5000
 
+// Mongodb connection configuration
+
+const { MongoClient } = require("mongodb");
+const uri = process.env.URI;
+const client = new MongoClient(uri)
+const database = "dat"
+client.db(database);
+
+// Mongodb connection 
+
+const connectToDatabase = async () => {
+  try {
+    await client.connect();
+    console.log(`Succefully connected to ${database} database`)
+  } catch (error) {
+    console.log(`Error connecting to the database ${err}`)
+  }
+}
+
+const main = async () => {
+  try {
+    await connectToDatabase()
+  } catch (err) {
+    console.log(`Error connecting to the database ${err}`)
+  }
+}
+
+//Middlewares
+
 app.use(bodyParser.json());
-app.use((req, res, next)=>{
-  console.log("request received")
-  next();
-})
 
-/*
-app.param('status', (req, res, next, stat) => {
-  const status = String(stat)
-  req.status = status
-})
-*/
+//Routers
 
-app.get('/find/allrecruiters', async (req, res) => {
-    const recruiter = await findAllRecruiters()
-    res.send(recruiter)
-  })
-  
-app.get('/find/recruiter', async (req, res, next) => {
-  const body = req.body
-  const name = body.name
-  const recruiter = await findByName(name)
-  res.send(recruiter)
-  next()
-})
+app.use('/recruiters', recruitersRouter);
 
 
-app.post('/add/recruiter', async (req, res) => {
-  const body = req.body
-  const recruiter = body.recruiter
-  const result = await addRecruiter(recruiter)
-  res.send(result)
-})
-
-app.use((req, res, next)=>{
-  console.log("request completed")
-})
+main();
 
 app.listen(port, () => {
     console.log(`Express listening on port ${port}`)
