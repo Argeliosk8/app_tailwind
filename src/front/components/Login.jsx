@@ -96,7 +96,7 @@ export const Login = ()=>{
               Not a member?{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 Start a 14 day free trial
-              </a>
+              </a> 
             </p>
           </div>
         </div>

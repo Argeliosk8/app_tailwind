@@ -1,19 +1,25 @@
-const express = require('express')
-const bodyParser = require('body-parser')
 require('dotenv').config()
-const usersRouter = require('./routes/users.js');
-const { listDatabases } = require('./appUtils.js') 
-
-const app = express()
-const port = 5000
-
-// Mongodb connection configuration
-
+const { addRecruiter } = require('./routes/utils')
 const { MongoClient } = require("mongodb");
 const uri = process.env.URI;
 const client = new MongoClient(uri)
 const database = "dat"
 client.db(database);
+
+const newUser = {
+    email: "argelio@gmail.com",
+    pwd: "welcome",
+    reqs: [],
+    status: "Active",
+    profile: {
+        first_name: "Argelio",
+        last_name: "Baca",
+        role: "Manager",
+        reqs: [],
+        reports: []
+    }
+
+}
 
 const connectToDatabase = async () => {
   try {
@@ -24,10 +30,10 @@ const connectToDatabase = async () => {
   }
 }
 
-const main = async () => {
+const insertUser = async (newUser) => {
   try {
     await connectToDatabase()
-    await listDatabases(client)
+    await addRecruiter(newUser)
   } catch (err) {
     console.log(`Error connecting to the database ${err}`)
   } finally {
@@ -35,17 +41,5 @@ const main = async () => {
   }
 }
 
-//Middlewares
+insertUser(newUser);
 
-app.use(bodyParser.json());
-
-//Routers
-
-app.use('/users', usersRouter);
-
-
-main();
-
-app.listen(port, () => {
-    console.log(`Express listening on port ${port}`)
-  })
