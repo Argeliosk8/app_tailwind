@@ -30,9 +30,7 @@ const main = async () => {
     await listDatabases(client)
   } catch (err) {
     console.log(`Error connecting to the database ${err}`)
-  } finally {
-    await client.close()
-  }
+  } 
 }
 
 //Middlewares

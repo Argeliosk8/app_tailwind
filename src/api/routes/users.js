@@ -1,5 +1,5 @@
 const express = require('express');
-const { findAllUsers, findUserByName, addUser, login } = require('./utils')
+const { findAllUsers, findUserByName, addUser, login, setLevel } = require('./utils')
 
 
 usersRouter = express.Router()
@@ -31,6 +31,21 @@ usersRouter.get('/findone', async (req, res, next) => {
     const result = await login(body.name, body.pwd)
     console.log(result)
     res.send(result)
+  })
+
+  usersRouter.post('/setlevel', async (req, res) => {
+    const body = req.body
+    let names = body.names
+    let level = body.level
+    try {
+      const result = await setLevel(names, level)
+      console.log(result)
+      res.send(result)
+      
+    } catch (error) {
+      console.log(error)
+    }
+    
   })
 
 module.exports = usersRouter;

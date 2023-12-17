@@ -73,3 +73,14 @@ exports.login = async (name, pwd) => {
     }
     return message
 }
+
+exports.setLevel = async (names, level) => {
+  let nameFilter = { "profile.first_name": { $in: names } }
+  let updatedLevel = { $set: { "profile.level": level } }
+  try {
+      const result = await users.updateMany(nameFilter, updatedLevel)
+      return result
+  } catch (error) {
+      console.log(error)
+  }
+}
