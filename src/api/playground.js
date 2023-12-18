@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { addRecruiter } = require('./routes/utils')
+const { addRecruiter } = require('./routes/usersUtils')
 const { MongoClient } = require("mongodb");
 const uri = process.env.URI;
 const client = new MongoClient(uri)
