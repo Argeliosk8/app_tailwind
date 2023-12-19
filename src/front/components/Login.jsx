@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import { AppContext } from "../context/ContextWrapper";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 
   export function Login() {    
@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
       console.log(data)
       if (data) {
         window.location.reload()
-        navigate("/about")
+        navigate("/home")
       } else {
         alert('error validating your credentials')
       }  
@@ -70,7 +70,7 @@ import { useNavigate } from "react-router-dom";
                     Password
                   </label>
                   <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    <a href="/" className="font-semibold text-indigo-600 hover:text-indigo-500">
                       Forgot password?
                     </a>
                   </div>
@@ -101,9 +101,9 @@ import { useNavigate } from "react-router-dom";
   
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
-              <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+              <Link  to={"/signup"} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 Sign up today!
-              </a> 
+              </Link> 
             </p>
           </div>
         </div>

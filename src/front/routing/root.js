@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import NavBar from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { LoginPage } from "../pages/login";
+import { SignUp } from "../pages/signup"
 
 function Root() {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn"))

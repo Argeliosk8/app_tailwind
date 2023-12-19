@@ -25,7 +25,7 @@ export default function NavBar() {
   const navigate = useNavigate()
   const [navigation, setNavigation] = useState(
     [
-      { name: 'Main', href: '/', current: false },
+      { name: 'Home', href: '/home', current: false },
       { name: 'Dashboard', href: '/dashboard', current: false },
       { name: 'Submit', href: '/submit', current: false },
       { name: 'About', href: '/about', current: false },
