@@ -1,4 +1,4 @@
-
+const bcrypt = require('bcrypt')
 
 
 exports.listDatabases = async (client) => {
@@ -9,3 +9,7 @@ exports.listDatabases = async (client) => {
     }); 
   }
 
+exports.checkHash = (password, hash) => {
+  const result = bcrypt.compare(password, hash, (err, result) => result)
+  return result
+}

@@ -46,7 +46,6 @@ exports.addUser = async (user) => {
         })
 
         const result = await users.insertOne(user)
-        console.log(result)
         return result
 
     } catch (error) {

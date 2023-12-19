@@ -5,7 +5,6 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 
-
 /*
 const navigation = [
   { name: 'Login', href: '/login', current: false },
@@ -21,11 +20,12 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
-  const { setIsLoggedIn } = useContext(AppContext)
+  const username = localStorage.getItem("username")
+  const { setIsLoggedIn, user } = useContext(AppContext)
   const navigate = useNavigate()
   const [navigation, setNavigation] = useState(
     [
-      { name: 'Login', href: '/login', current: false },
+      { name: 'Main', href: '/', current: false },
       { name: 'Dashboard', href: '/dashboard', current: false },
       { name: 'Submit', href: '/submit', current: false },
       { name: 'About', href: '/about', current: false },
@@ -96,6 +96,11 @@ export default function NavBar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <p className={classNames(
+                          'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'rounded-md px-3 py-2 text-sm font-medium'
+                        )}>Welcome, {username}
+                </p>
                 <button
                   type="button"
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

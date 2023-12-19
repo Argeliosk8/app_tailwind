@@ -1,12 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import NavBar from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { LoginPage } from "../pages/login";
-import { AppContext } from "../context/ContextWrapper";
 
 function Root() {
-    const {isLoggedIn} = useContext(AppContext)
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn"))
+    useEffect(()=>{
+        setIsLoggedIn(localStorage.getItem("isLoggedIn"))
+    }, [])
+
     return(
         <div>
             {

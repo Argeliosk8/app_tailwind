@@ -2,20 +2,27 @@ import React, {useContext, useState} from "react";
 import { AppContext } from "../context/ContextWrapper";
 import { useNavigate } from "react-router-dom";
 
-export const Login = ()=>{
-  const navigate = useNavigate();
-  const {setIsLoggedIn} = useContext(AppContext)
-  const [user, setUser] = useState()
-  const [pwd, setPwd] = useState()
-  const login = (e)=>{
-    e.preventDefault()
-    if (user == 'argelio@gmail.com' && pwd == '123'){
-      setIsLoggedIn(true)
-      navigate('/dashboard')
-    } else {
-      alert('wrong login info')
+
+
+  export function Login() {    
+    const [user, setUser] = useState()
+    const [pwd, setPwd] = useState()
+    const navigate = useNavigate();
+    const { login } = useContext(AppContext)
+
+    const loginClick = async (e)=>{
+      
+      e.preventDefault()
+      const data = await login(user, pwd)
+      console.log(data)
+      if (data) {
+        window.location.reload()
+        navigate("/about")
+      } else {
+        alert('error validating your credentials')
+      }  
     }
-  }
+
     return(
         <>
         {/*
@@ -83,7 +90,7 @@ export const Login = ()=>{
   
               <div>
                 <button
-                  onClick={login}
+                  onClick = {(e)=>{loginClick(e)}}
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
@@ -95,7 +102,7 @@ export const Login = ()=>{
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
+                Sign up today!
               </a> 
             </p>
           </div>
