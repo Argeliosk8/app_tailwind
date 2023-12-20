@@ -38,20 +38,11 @@ exports.findUserByName = async (name) => {
       }
 }
 
-exports.addUser = async (user) => {
-    try {
-        
-        bcrypt.hash(user.pwd, 10, (err, hash) => {
-          user.pwd = hash
-        })
-
-        const result = await users.insertOne(user)
-        return result
-
-    } catch (error) {
-        console.log(error)
-        await client.close();
-    }
+exports.addUser = async (newUser) => {
+  const salt = await bcrypt.genSalt(10)
+  newUser.pwd = await bcrypt.hash(newUser.pwd, salt)
+  const result = await users.insertOne(newUser)
+  return result
 }
 
 exports.login = async (name, pwd) => {

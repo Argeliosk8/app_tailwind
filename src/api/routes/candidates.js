@@ -20,7 +20,7 @@ candidatesRouter.get('/all', async (req, res) => {
     const userEmail = req.user.email
     try {
         const candidates = await findCandidatesByUser(userEmail)
-        //console.log(candidates)
+        console.log(candidates)
         res.status(200).send(candidates)
     } catch (error) {
         console.log(error)

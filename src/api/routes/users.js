@@ -19,8 +19,7 @@ usersRouter.get('/findone', async (req, res) => {
 
 
   usersRouter.post('/addone', async (req, res) => {
-    const body = req.body
-    const user = body.user
+    const user = req.body
     const result = await addUser(user)
     res.send(result)
   })
