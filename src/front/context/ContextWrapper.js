@@ -8,6 +8,7 @@ export const ContextWrapper = ({children})=> {
     const [name, setName] = useState("Argelio Baca");
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState()
+    const [candidates, setCandidates] = useState()
     /*Global Functions*/
     const changeName = (newName)=>{
         if(name === "Argelio Baca"){
@@ -36,15 +37,23 @@ export const ContextWrapper = ({children})=> {
             console.log(error)
         }
     }
+
+    const logout = ()=>{
+        try {
+            localStorage.removeItem("jwt-token")
+            localStorage.removeItem("username")
+            localStorage.removeItem("isLoggedIn")
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
     
     const verifylogin = async () => {
         const tokenToVerify = localStorage.getItem("jwt-token")
         try {
             const res = await fetch("http://localhost:5000/login", {
                 method: "GET",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({}),
-                Authorization: 'bearer' + ' ' + tokenToVerify
+                headers: {"Content-Type": "application/json", "Authorization": "Bearer " + tokenToVerify }
             })
 
             if(!res.ok) throw Error("No token or unable to verify")
@@ -57,6 +66,42 @@ export const ContextWrapper = ({children})=> {
         }
     }
 
+    const getCandidates = async () => {
+        const tokenToVerify = localStorage.getItem("jwt-token")
+        console.log(tokenToVerify)
+        try {
+            const response = await fetch('http://localhost:5000/candidate/all', {
+                method: "GET",
+                headers: {"Content-Type": "application/json", "Authorization": "Bearer " + tokenToVerify }
+            })
+
+            if(!response.ok) throw Error("Error obtaining candidates")
+            const data = await response.json()
+            setCandidates(data)
+            console.log(candidates)
+            return candidates
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const signUp = async (newUser) => {
+        try {
+            const resp = await fetch('http://localhost:5000/signup', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newUser)
+            })
+            if(!resp.ok) throw new Error("There was an error signing up")
+            const data = await resp.json()
+            console.log(data)
+            return data
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+
     return (
         
         <AppContext.Provider value={{
@@ -66,7 +111,11 @@ export const ContextWrapper = ({children})=> {
             setIsLoggedIn,
             login,
             user,
-            verifylogin
+            verifylogin,
+            getCandidates,
+            candidates,
+            logout,
+            signUp
             }}>
             {children}
         </AppContext.Provider>

@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
+const { Storage } = require('@google-cloud/storage');
+const multer = require('multer');
 require('dotenv').config()
 const usersRouter = require('./routes/users.js');
 const candidatesRouter = require('./routes/candidates.js')
@@ -18,7 +20,7 @@ const { MongoClient } = require("mongodb");
 const uri = process.env.URI;
 const client = new MongoClient(uri)
 const database = "dat"
-client.db(database);
+client.db(database, { useNewUrlParser: true, useUnifiedTopology: true });
 const usersCollection = client.db("dat").collection("users")
 
 const connectToDatabase = async () => {
@@ -60,6 +62,63 @@ const verifyToken = (req, res, next) => {
     
   }  
 }
+
+
+// storage and multer configurations
+const storage = new Storage({
+  keyFilename: 'credentials/credentials.json',
+});
+
+const bucket = storage.bucket('dat_resumes');
+const storageMulter = multer.memoryStorage();
+const upload = multer({ storage: storageMulter });
+const expiration = Date.now() + 15 * 60 * 1000;
+
+const uploadImageToStorage = async (file) => {
+  const filename = Date.now() + '_' + file.originalname;
+  const fileUpload = bucket.file(filename);
+
+  const stream = fileUpload.createWriteStream({
+    metadata: {
+      contentType: file.mimetype,
+    },
+  });
+
+  stream.end(file.buffer);
+
+  return new Promise( (resolve, reject) => {
+    stream.on('finish', async () => {
+      const file = storage.bucket('dat_resumes').file(filename);
+      //const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+      const [url] = await file.getSignedUrl({
+        action: 'read',
+        expires: expiration,
+      });
+      resolve(url);
+    });
+
+    stream.on('error', (err) => {
+      reject(`Unable to upload image, ${err}`);
+    });
+  });
+};
+
+//test upload route
+app.post('/upload', upload.single('image'), async (req, res) => {
+  const file = req.file;
+
+  if (!file) {
+    return res.status(400).send('No file uploaded.');
+  }
+
+  const imageUrl = await uploadImageToStorage(file);
+
+  console.log(imageUrl)
+
+
+  res.send('File uploaded successfully.');
+});
+
 
 //Middlewares
 app.use(bodyParser.json());

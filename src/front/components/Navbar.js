@@ -1,5 +1,5 @@
 import { AppContext } from "../context/ContextWrapper";
-import { Fragment, useState, useContext } from 'react'
+import { React, Fragment, useState, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
@@ -21,14 +21,14 @@ function classNames(...classes) {
 
 export default function NavBar() {
   const username = localStorage.getItem("username")
-  const { setIsLoggedIn, user } = useContext(AppContext)
+  const { logout } = useContext(AppContext)
   const navigate = useNavigate()
   const [navigation, setNavigation] = useState(
     [
       { name: 'Home', href: '/home', current: false },
       { name: 'Dashboard', href: '/dashboard', current: false },
       { name: 'Submit', href: '/submit', current: false },
-      { name: 'About', href: '/about', current: false },
+      { name: 'Pool', href: '/pool', current: false },
     ]
   )
 
@@ -44,10 +44,12 @@ export default function NavBar() {
     console.log(navigation)
   }
 
-  const logOut = (e)=>{
+  const logoutClick = (e)=>{
     e.preventDefault()
-    setIsLoggedIn(false)
+    logout()
     navigate("/")
+    window.location.reload()
+    
   }
 
   return (
@@ -156,7 +158,7 @@ export default function NavBar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            onClick={logOut}
+                            onClick={(e)=>{logoutClick(e)}}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign out
