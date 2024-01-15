@@ -7,6 +7,8 @@ const database = client.db('dat');
 const users = database.collection('users');
 const bcrypt = require('bcrypt');
 
+
+
 exports.findAllUsers = async () => {
     try {
       const query = {}
@@ -74,3 +76,6 @@ exports.setLevel = async (names, level) => {
       console.log(error)
   }
 }
+
+
+

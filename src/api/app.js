@@ -43,7 +43,9 @@ const main = async () => {
 
 
 const verifyToken = (req, res, next) => {
+  const candidate = req.candidate
   const bearerHeader = req.headers['authorization']
+  console.log(candidate)
   if(typeof bearerHeader !== 'undefined') {
     const token = bearerHeader.split(" ")[1]
     jwt.verify(token, process.env.JWT_SECRET, (error, authData) => {
